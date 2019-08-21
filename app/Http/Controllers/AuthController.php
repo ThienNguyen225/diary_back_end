@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Services\Contracts\UserServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -11,16 +11,23 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
+    protected $userSevice;
+
+    public function __construct(UserServiceInterface $userServices)
+    {
+        $this->userSevice = $userServices;
+    }
+
     public function register(Request $request)
     {
-        $params = $request->only('email', 'name', 'password');
-        $user = new User();
-        $user->email = $params['email'];
-        $user->name = $params['name'];
-        $user->password = bcrypt($params['password']);
-        $user->save();
-
-        return response()->json($user, Response::HTTP_OK);
+//        $params = $request->only('email', 'name', 'password');
+//        $user = new User();
+//        $user->email = $params['email'];
+//        $user->name = $params['name'];
+//        $user->password = bcrypt($params['password']);
+//        $user->save();
+//        return response()->json($user, Response::HTTP_OK);
+        $this->userSevice->create($request);
     }
 
     public function login(Request $request)

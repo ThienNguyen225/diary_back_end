@@ -4,7 +4,7 @@
 namespace App\Services\Contracts;
 
 
-interface UserServiceInterface
+interface UserServiceInterface extends ServiceInterface
 {
 
 }
