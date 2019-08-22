@@ -2,25 +2,45 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Services\Contracts\UserServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 
 class AuthController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserServiceInterface $userServices)
+    {
+        $this->userService = $userServices;
+    }
+
     public function register(Request $request)
     {
-        $params = $request->only('email', 'name', 'password');
-        $user = new User();
-        $user->email = $params['email'];
-        $user->name = $params['name'];
-        $user->password = bcrypt($params['password']);
-        $user->save();
-
-        return response()->json($user, Response::HTTP_OK);
+//        $params = $request->only('email', 'name', 'password');
+//        $user = new User();
+//        $user->email = $params['email'];
+//        $user->name = $params['name'];
+//        $user->password = bcrypt($params['password']);
+//        $user->save();
+//        return response()->json($user, Response::HTTP_OK);
+        try {
+            $newRequest = $this->bcryptPassword($request->all());
+            $data = $this->userService->create($newRequest);
+            return response()->json([
+                'data' => $data['result'],
+                'status' => $data['status']
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function login(Request $request)
@@ -63,5 +83,15 @@ class AuthController extends Controller
     public function refresh()
     {
         return response(JWTAuth::getToken(), Response::HTTP_OK);
+    }
+    public function bcryptPassword($request)
+    {
+        foreach ($request as $key => $value) {
+            if ($key === "password") {
+                $request["$key"] = Hash::make("$value");
+                break;
+            }
+        }
+        return $request;
     }
 }
