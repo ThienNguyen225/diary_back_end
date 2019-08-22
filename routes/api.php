@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 
 Route::post('signup', 'AuthController@register');
 Route::post('login', 'AuthController@login');
+//thêm mới 1 tài khoản
+Route::post('user', 'UserApiController@store');
 
 Route::group(['middleware' => 'jwt.verify'], function () {
     Route::prefix('admin')->group(function () {
@@ -22,8 +24,6 @@ Route::group(['middleware' => 'jwt.verify'], function () {
         Route::get('user', 'AuthController@user');
         //lấy danh sách tất cả tài khoản
         Route::get('users', 'UserApiController@index');
-        //thêm mới 1 tài khoản
-        Route::post('user', 'UserApiController@store');
         //cập nhật 1 tài khoản
         Route::put('user/{id}', 'UserApiController@update');
         // xóa 1 tài khoản
