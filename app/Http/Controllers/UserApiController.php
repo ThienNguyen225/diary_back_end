@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUser;
 use App\Services\Contracts\UserServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -31,7 +32,7 @@ class UserApiController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(StoreUser $request)
     {
         try {
             $newRequest = $this->bcryptPassword($request->all());

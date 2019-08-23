@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUser;
 use App\Services\Contracts\UserServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -19,15 +20,8 @@ class AuthController extends Controller
         $this->userService = $userServices;
     }
 
-    public function register(Request $request)
+    public function register(StoreUser $request)
     {
-//        $params = $request->only('email', 'name', 'password');
-//        $user = new User();
-//        $user->email = $params['email'];
-//        $user->name = $params['name'];
-//        $user->password = bcrypt($params['password']);
-//        $user->save();
-//        return response()->json($user, Response::HTTP_OK);
         try {
             $newRequest = $this->bcryptPassword($request->all());
             $data = $this->userService->create($newRequest);
@@ -54,7 +48,9 @@ class AuthController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
 
-        return response()->json(['token' => $token], Response::HTTP_OK);
+        return response()->json([
+            'token' => $token,
+        ], Response::HTTP_OK);
     }
 
     public function user(Request $request)
@@ -84,6 +80,7 @@ class AuthController extends Controller
     {
         return response(JWTAuth::getToken(), Response::HTTP_OK);
     }
+
     public function bcryptPassword($request)
     {
         foreach ($request as $key => $value) {
