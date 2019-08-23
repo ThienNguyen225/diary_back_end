@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePassword;
 use App\Http\Requests\StoreUser;
 use App\Services\Contracts\UserServiceInterface;
 use Illuminate\Http\Request;
@@ -81,6 +82,32 @@ class AuthController extends Controller
         return response(JWTAuth::getToken(), Response::HTTP_OK);
     }
 
+    public function changePassword(ChangePassword $request)
+    {
+        //request:{ current-password, new-password, new-password_confirmation }
+        if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
+            // The passwords matches
+            return response()->json(array(
+                "error" => "Your current password does not matches with the password you provided. Please try again."
+            ));
+        }
+
+        if (strcmp($request->get('current-password'), $request->get('new-password')) == 0) {
+            //Current password and new password are same
+            return response()->json(array(
+                "error", "New Password cannot be same as your current password. Please choose a different password."
+            ));
+        }
+
+        //Change Password
+        $user = Auth::user();
+        $user->password = bcrypt($request->get('new-password'));
+        $user->save();
+        return response()->json(array(
+            "success", "Password changed successfully !"
+        ));
+    }
+
     public function bcryptPassword($request)
     {
         foreach ($request as $key => $value) {
@@ -91,4 +118,5 @@ class AuthController extends Controller
         }
         return $request;
     }
+
 }
