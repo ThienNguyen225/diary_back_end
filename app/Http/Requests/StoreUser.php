@@ -25,7 +25,7 @@ class StoreUser extends FormRequest
     {
         return [
             'name' => 'required|min:4|regex:/(^([a-zA-Z ]+)(\d+)?$)/u',
-            'email' => "required|email|unique:customers,email,$this",
+            'email' => "required|email|unique:customers,email",
             'password' => 'required|min:6',
 //            'phone' => 'required|regex:/(0)[0-9]{9}/|unique:customers,phone',
 //            'date_of_birth' => 'required|before:today',
