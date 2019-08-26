@@ -21,22 +21,25 @@ class SocialController extends Controller
         $users = User::where(['email' => $userSocial->getEmail()])->first();
 
         $credentials = $users->only('email', 'password');
-        dd($credentials);
         $token = JWTAuth::attempt($credentials);
 
         if ($users) {
             Auth::login($users);
-            return response()->json();
-//            return redirect('/');
+            return redirect('/');
         } else {
-            $user = User::create([
-                'name' => $userSocial->getName(),
-                'email' => $userSocial->getEmail(),
-                'image' => $userSocial->getAvatar(),
-                'provider_id' => $userSocial->getId(),
-                'provider' => $provider,
-            ]);
+            $users = $this->createUser($userSocial, $provider);
             return redirect()->route('home');
         }
+    }
+
+    public function createUser($userSocial, $provider)
+    {
+        return User::create([
+            'name' => $userSocial->getName(),
+            'email' => $userSocial->getEmail(),
+            'image' => $userSocial->getAvatar(),
+            'provider_id' => $userSocial->getId(),
+            'provider' => $provider,
+        ]);
     }
 }

@@ -65,6 +65,23 @@ class AuthController extends Controller
         return response(null, Response::HTTP_BAD_REQUEST);
     }
 
+    public function updateUser(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $user->update($request->all());
+            return response()->json([
+                'data' => $user,
+                'status' => 'susses'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function logout(Request $request)
     {
         $this->validate($request, ['token' => 'required']);
