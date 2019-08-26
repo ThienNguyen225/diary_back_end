@@ -18,10 +18,15 @@ Route::post('login', 'AuthController@login');
 //thêm mới 1 tài khoản
 Route::post('user', 'UserApiController@store');
 
+Route::post('login/{provider}', 'SocialController@redirect');
+Route::get('login/{provider}/callback','SocialController@Callback');
+
 Route::group(['middleware' => 'jwt.verify'], function () {
     Route::prefix('admin')->group(function () {
         //lấy 1 user đang đang nhập
         Route::get('user', 'AuthController@user');
+        //reset password user đang đăng nhập
+        Route::put('reset/user', 'AuthController@changePassword');
         //lấy danh sách tất cả tài khoản
         Route::get('users', 'UserApiController@index');
         //cập nhật 1 tài khoản
