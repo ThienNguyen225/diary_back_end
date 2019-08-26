@@ -15,8 +15,7 @@ use Illuminate\Http\Request;
 
 Route::post('signup', 'AuthController@register');
 Route::post('login', 'AuthController@login');
-//thêm mới 1 tài khoản
-Route::post('user', 'UserApiController@store');
+
 
 Route::post('login/{provider}', 'SocialController@redirect');
 Route::get('login/{provider}/callback','SocialController@Callback');
@@ -25,6 +24,8 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::prefix('admin')->group(function () {
         //lấy 1 user đang đang nhập
         Route::get('user', 'AuthController@user');
+        //thêm mới 1 tài khoản
+        Route::post('user', 'UserApiController@store');
         //update user đang đang nhập
         Route::put('user', 'AuthController@updateUser');
         //reset password user đang đăng nhập
