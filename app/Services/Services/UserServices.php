@@ -14,7 +14,7 @@ class UserServices extends Service implements UserServiceInterface
 
     public function __construct(UserInterface $userRepository)
     {
-        $this->setUserRepository($userRepository);
+        $this->setRepository($userRepository);
     }
 
     public function changePassword($request)

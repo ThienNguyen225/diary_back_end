@@ -10,7 +10,7 @@ abstract class Service implements ServiceInterface
 {
     protected $repository;
 
-    public function setUserRepository($repository)
+    public function setRepository($repository)
     {
         $this->repository = $repository;
     }

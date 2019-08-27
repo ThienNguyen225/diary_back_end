@@ -15,7 +15,6 @@ class CreateDiariesTable extends Migration
     {
         Schema::create('diaries', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string("name");
             $table->string("title");
             $table->string("contents");
             $table->bigInteger('id_user');
