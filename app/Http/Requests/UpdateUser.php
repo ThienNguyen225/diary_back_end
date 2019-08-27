@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 
 class UpdateUser extends FormRequest
 {
@@ -13,7 +17,7 @@ class UpdateUser extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +28,33 @@ class UpdateUser extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|string|min:6|max:25',
+            'phone' => 'regex:/(0)[0-9]{9}/|unique:customers,phone',
+            'age' => 'number',
+            'image' => 'mimes:jpeg,png,bmp,gif,svg,jpg',
+            'address' => 'string|min:6|max:255',
         ];
+    }
+    public function messages()
+    {
+        return $messages = [
+            'required' => 'Trường :Attribute không được để trống',
+            'string' => 'Trường :Attribute là kiểu chữ',
+            'min' => 'Trường :Attribute ít nhất :min ký tự',
+            'max' => 'Trường :Attribute nhiều nhất :max ký tự',
+            'unique' => ':Attribute đã tồn tại',
+            'regex' => 'Hãy đền đúng định dạng :Attribute',
+        ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+
+        $errors = (new ValidationException($validator))->errors();
+        throw new HttpResponseException(response()->json(
+            [
+                'error' => $errors,
+                'status_code' => 422,
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
