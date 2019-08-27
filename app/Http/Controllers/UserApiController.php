@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUser;
+use App\Http\Requests\UpdateUser;
 use App\Services\Contracts\UserServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -35,8 +36,9 @@ class UserApiController extends Controller
     public function store(StoreUser $request)
     {
         try {
-            $newRequest = $this->bcryptPassword($request->all());
-            $data = $this->userService->create($newRequest);
+            $input = $request->all();
+            $input['password'] = bcrypt($input['password']);
+            $data = $this->userService->create($input);
             return response()->json([
                 'data' => $data['result'],
                 'status' => $data['status']
@@ -50,11 +52,12 @@ class UserApiController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(UpdateUser $request, $id)
     {
         try {
-            $newRequest = $this->bcryptPassword($request->all());
-            $data = $this->userService->update($newRequest, $id);
+            $input = $request->all();
+            $input['password'] = bcrypt($input['password']);
+            $data = $this->userService->update($input, $id);
             return response()->json([
                 'data' => $data['result'],
                 'status' => $data['status']
@@ -100,14 +103,4 @@ class UserApiController extends Controller
         }
     }
 
-    public function bcryptPassword($request)
-    {
-        foreach ($request as $key => $value) {
-            if ($key === "password") {
-                $request["$key"] = Hash::make("$value");
-                break;
-            }
-        }
-        return $request;
-    }
 }
