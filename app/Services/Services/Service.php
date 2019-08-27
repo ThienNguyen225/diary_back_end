@@ -57,7 +57,6 @@ abstract class Service implements ServiceInterface
     public function update($request, $id)
     {
         $result = $this->repository->getById($id);
-
         if (!$result) {
             $newResult = null;
             $status = 404;

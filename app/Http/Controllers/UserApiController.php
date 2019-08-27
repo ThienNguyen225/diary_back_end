@@ -56,7 +56,6 @@ class UserApiController extends Controller
     {
         try {
             $input = $request->all();
-            $input['password'] = bcrypt($input['password']);
             $data = $this->userService->update($input, $id);
             return response()->json([
                 'data' => $data['result'],

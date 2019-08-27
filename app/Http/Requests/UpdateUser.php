@@ -44,6 +44,7 @@ class UpdateUser extends FormRequest
             'max' => 'Trường :Attribute nhiều nhất :max ký tự',
             'unique' => ':Attribute đã tồn tại',
             'regex' => 'Hãy đền đúng định dạng :Attribute',
+            'mimes' => 'Không phải file ảnh',
         ];
     }
 
