@@ -18,7 +18,7 @@ Route::post('login', 'AuthController@login');
 
 
 Route::post('login/{provider}', 'SocialController@redirect');
-Route::get('login/{provider}/callback','SocialController@Callback');
+Route::get('login/{provider}/callback', 'SocialController@Callback');
 
 Route::group(['middleware' => 'jwt.verify'], function () {
     Route::prefix('admin')->group(function () {
@@ -38,7 +38,24 @@ Route::group(['middleware' => 'jwt.verify'], function () {
         Route::delete('user/{id}', 'UserApiController@destroy');
         //lấy tài khoản theo ID
         Route::get('user/{id}', 'UserApiController@show');
+
+        //lấy tất cả các bài nhật ký
+        Route::get('diary', 'DiaryApiController@index');
     });
+
+    Route::prefix('user')->group(function () {
+        //lấy tất cả nhật ký của tài khoản đang đăng nhập
+        Route::get('diary', 'DiaryApiController@getDiaryOfUser');
+        //thêm mới nhật ký của tài khoản đang đăng nhập
+        Route::post('diary', 'DiaryApiController@store');
+        //chỉnh sửa nhật ký của tài khoản đang đăng nhập
+        Route::put('diary/{id}', 'DiaryApiController@update');
+        //xóa nhật ký của tài khoản đang đăng nhập
+        Route::delete('diary/{id}', 'DiaryApiController@destroy');
+        //lấy 1 nhật ký của tài khoản đang đăng nhập theo id
+        Route::get('diary/{id}', 'DiaryApiController@show');
+    });
+
     Route::post('logout', 'AuthController@logout');
 });
 

@@ -10,7 +10,7 @@ abstract class Service implements ServiceInterface
 {
     protected $repository;
 
-    public function setUserRepository($repository)
+    public function setRepository($repository)
     {
         $this->repository = $repository;
     }
@@ -57,7 +57,6 @@ abstract class Service implements ServiceInterface
     public function update($request, $id)
     {
         $result = $this->repository->getById($id);
-
         if (!$result) {
             $newResult = null;
             $status = 404;

@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUser;
-use App\Http\Requests\UpdateUser;
-use App\Services\Contracts\UserServiceInterface;
+use App\Services\Contracts\DiaryServiceInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
-class UserApiController extends Controller
+class DiaryApiController extends Controller
 {
-    protected $userService;
+    protected $diaryService;
 
-    public function __construct(UserServiceInterface $userService)
+    public function __construct(DiaryServiceInterface $diaryService)
     {
-        $this->userService = $userService;
+        $this->diaryService = $diaryService;
     }
 
     public function index()
     {
         try {
-            $data = $this->userService->getAll();
+            $data = $this->diaryService->getAll();
             return response()->json([
                 'data' => $data,
                 'status' => 200
@@ -33,12 +30,27 @@ class UserApiController extends Controller
         }
     }
 
-    public function store(StoreUser $request)
+    public function getDiaryOfUser()
+    {
+        try {
+            $data = $this->diaryService->getDiaryOfUser();
+            return response()->json([
+                'data' => $data,
+                'status' => 200
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function store(Request $request)
     {
         try {
             $input = $request->all();
-            $input['password'] = bcrypt($input['password']);
-            $data = $this->userService->create($input);
+            $data = $this->diaryService->createDiaryOfUser($input);
             return response()->json([
                 'data' => $data['result'],
                 'status' => $data['status']
@@ -52,11 +64,11 @@ class UserApiController extends Controller
     }
 
 
-    public function update(UpdateUser $request, $id)
+    public function update(Request $request, $id)
     {
         try {
             $input = $request->all();
-            $data = $this->userService->update($input, $id);
+            $data = $this->diaryService->updateDiaryOfUser($input, $id);
             return response()->json([
                 'data' => $data['result'],
                 'status' => $data['status']
@@ -72,7 +84,7 @@ class UserApiController extends Controller
     public function show($id)
     {
         try {
-            $data = $this->userService->getById($id);
+            $data = $this->diaryService->getById($id);
             return response()->json([
                 'data' => $data['result'],
                 'status' => $data['status']
@@ -88,7 +100,7 @@ class UserApiController extends Controller
     public function destroy($id)
     {
         try {
-            $data = $this->userService->delete($id);
+            $data = $this->diaryService->delete($id);
             if ($data) {
                 return response()->json([
                     'data' => $data
@@ -101,5 +113,4 @@ class UserApiController extends Controller
             ]);
         }
     }
-
 }

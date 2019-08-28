@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquent;
 
 
 use App\Repositories\Contracts\RepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 
 abstract class RepositoryEloquent implements RepositoryInterface
 {

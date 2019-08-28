@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
+    'App\\Diary' => $baseDir . '/app/Diary.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\AuthController' => $baseDir . '/app/Http/Controllers/AuthController.php',
     'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
@@ -114,6 +115,7 @@ return array(
     'DeepCopy\\TypeFilter\\Spl\\SplDoublyLinkedListFilter' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/Spl/SplDoublyLinkedListFilter.php',
     'DeepCopy\\TypeFilter\\TypeFilter' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/TypeFilter/TypeFilter.php',
     'DeepCopy\\TypeMatcher\\TypeMatcher' => $vendorDir . '/myclabs/deep-copy/src/DeepCopy/TypeMatcher/TypeMatcher.php',
+    'DiaryTableSeeder' => $baseDir . '/database/seeds/DiaryTableSeeder.php',
     'Doctrine\\Common\\Inflector\\Inflector' => $vendorDir . '/doctrine/inflector/lib/Doctrine/Common/Inflector/Inflector.php',
     'Doctrine\\Common\\Lexer\\AbstractLexer' => $vendorDir . '/doctrine/lexer/lib/Doctrine/Common/Lexer/AbstractLexer.php',
     'Doctrine\\Instantiator\\Exception\\ExceptionInterface' => $vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator/Exception/ExceptionInterface.php',

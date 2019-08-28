@@ -49,12 +49,12 @@ class StoreUser extends FormRequest
             'unique' => ':Attribute đã tồn tại',
             'email' => 'Hãy đền đúng định dạng :Attribute',
             'regex' => 'Hãy đền đúng định dạng :Attribute',
+            'mimes' => 'Không phải file ảnh',
         ];
     }
 
     protected function failedValidation(Validator $validator)
     {
-
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json(
             [

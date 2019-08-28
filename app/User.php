@@ -11,6 +11,11 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    public function diary()
+    {
+        return $this->hasMany(Diary::class, 'id_user', 'id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -18,6 +23,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name', 'email', 'image', 'provider', 'provider_id', 'password',
+        'phone', 'age', 'address'
     ];
 
     /**
