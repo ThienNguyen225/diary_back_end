@@ -22,7 +22,7 @@ class DiaryRepositoryEloquent extends RepositoryEloquent implements DiaryInterfa
 
     public function getDiaryOfUser()
     {
-        return $this->model->where('id_user', $this->getIdUser())->get();
+        return $this->model->where('id_user', $this->getIdUser())->orderBy('updated_at', 'DESC')->get();
     }
 
     public function createDiaryOfUser($data)
