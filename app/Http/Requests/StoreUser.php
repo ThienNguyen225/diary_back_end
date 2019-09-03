@@ -50,6 +50,7 @@ class StoreUser extends FormRequest
             'email' => 'Hãy đền đúng định dạng :Attribute',
             'regex' => 'Hãy đền đúng định dạng :Attribute',
             'mimes' => 'Không phải file ảnh',
+            'number' => 'Hãy đền số!',
         ];
     }
 

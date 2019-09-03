@@ -14,11 +14,13 @@ class DiaryTableSeeder extends Seeder
     {
         for ($i = 0; $i < 10; $i++) {
             $faker = Factory::create();
-            DB::table('diaries')->insert([
+            $diary = new \App\Diary();
+            $data = [
                 'title' => $faker->title,
                 'contents' => $faker->words(20, true),
                 'id_user' => 1
-            ]);
+            ];
+            $diary->create($data);
         }
     }
 }
